@@ -50,9 +50,9 @@ void Response::addCookie(HttpCookie cookie)
     response += string(buf);
 }
 
-string Response::getResponse()
+string Response::getResponse(bool verbose)
 {
-    if(DEBUG)
+    if(verbose)
     {
         std::cout << "Response headers:\n";
         std::cout << response << '\n';

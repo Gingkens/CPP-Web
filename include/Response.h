@@ -20,7 +20,7 @@ public:
     void Content_Length(int len);
     void Redirect(string location);
     void addCookie(HttpCookie);
-    string getResponse();
+    string getResponse(bool verbose = true);
     string getResponseFile(){return response_file;}
 private:
     string start_line, headers, response;

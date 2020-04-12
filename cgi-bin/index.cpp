@@ -1,7 +1,5 @@
-//#include "Net.h"
-//#include "Response.h"
-
 #include "session.h"
+#include "Response.h"
 #include <string.h>
 #include <iostream>
 #include <sstream>
@@ -51,7 +49,7 @@ int main(int argc, char *argv[])
         msg_entity <<"<h1>Hello, Stranger!</h1>\n"; 
     msg_entity << "</div>\n";
 
-    msg_entity << "<form method='post' action='/' name='Login' onsubmit='return validateForm()'>\n";
+    msg_entity << "<form method='post' action='/cgi-bin/index' name='Login' onsubmit='return validateForm()'>\n";
     msg_entity << "<div class='form-group'>\n";
     msg_entity << "<label for='exampleInputEmail1'>What is your name?</label>\n";
     msg_entity << "<input class='form-control' type='text' name='name' placeholder='Name'>\n";
@@ -64,16 +62,16 @@ int main(int argc, char *argv[])
     msg_entity << "</body>\n";
     msg_entity << "</html>\n";
 
-    headers << "HTTP/1.1 200 OK\r\n";
-    headers << "Content-Type: text/html\r\n";
-    headers << "Content-Length: " << msg_entity.str().size() << "\r\n\r\n";
 
-//    response.init(200, "OK", "index", "text/html", msg_entity.str().size());
+    Response response(200, "OK", "text/html", msg_entity.str().size());
 
-    cout << headers.str().c_str();
+    cout << response.getResponse(false);
+
+    fprintf(stderr, "cgi-bin:Response headers:\n%s", headers.str().c_str());
+
+
     cout << msg_entity.str().c_str();
-    // rio.rio_send(response.getResponse().c_str(), response.size());
-    // rio.rio_send(msg_entity.str().c_str(), msg_entity.str().size());
+
 
     return 0;
 }

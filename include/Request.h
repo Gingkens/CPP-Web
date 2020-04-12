@@ -19,6 +19,7 @@ public:
     string getFilename(){return filename;}
     string getFiletype(){return filetype;}
     string getData(string name){return datas[name];}
+    string getData(){return entity;}
     string getArgs(){return cgi_args;}
     bool Is_static(){return is_static;}
 private:

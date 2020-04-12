@@ -1,5 +1,4 @@
 #include "Net.h"
-#include "session.h"
 #include "HttpCookie.h"
 #include "Response.h"
 
@@ -18,7 +17,7 @@ typedef struct sockaddr  SA;
 void *doit(void *vargp);
 void process(RIO &rp, Request &request);
 void serve_static(RIO &rp, const char *filename, int filesize);
-void serve_dynamic(int fd, const char *filename, const char *cgiargs, const char * cookie);
+void serve_dynamic(int fd, const char *filename, const char *cgiargs, const char * cookie, const char * data);
 
 int main(int argc, char *argv[])
 {
@@ -58,7 +57,7 @@ void *doit(void *vargp)
     while(1)
     {
         cout << "waitting for " << connfd << '\n';
-        Request request = crio.read_request();                        //读取HTTP消息头第一行
+        Request request = crio.read_request();                     
 
         process(crio, request);
     }
@@ -71,7 +70,7 @@ void process(RIO &rp, Request &request)
     Response response;
 //    Session sess(request["Cookie"]);
     
-//    cout << "request file:" << request.getFilename() << '\n';
+    cout << "request file:" << request.getFilename() << '\n';
 
     if( stat(request.getFilename().c_str(), &sbuf) < 0 )         //404
     {
@@ -84,21 +83,20 @@ void process(RIO &rp, Request &request)
     {       
         response.Redirect("/");
         HttpCookie cookie("session", request.getData("name"));
-        // cookie.setExpires();
+//        cookie.setExpires();
         response.addCookie(cookie);
         rp.rio_send(response.getResponse().c_str(), response.size(), 0);
         return;
-
     }
-    else                                        //未实现 501
-    {
-        // strcpy(filename, "501.html");
-        // strcpy(filetype, "text/html");
-        // stat(filename, &sbuf);
-        // response.init(501, "Not Implemented", filetype, sbuf.st_size);
+    // else                                        //未实现 501
+    // {
+    //     // strcpy(filename, "501.html");
+    //     // strcpy(filetype, "text/html");
+    //     // stat(filename, &sbuf);
+    //     // response.init(501, "Not Implemented", filetype, sbuf.st_size);
 
-        // head = header(501, "Not Implemented", sbuf.st_size, filetype, infos);
-    }
+    //     // head = header(501, "Not Implemented", sbuf.st_size, filetype, infos);
+    // }
 
     if( request.Is_static())
     {
@@ -107,15 +105,16 @@ void process(RIO &rp, Request &request)
     }
     else
     {
+        cout << "dynamic\n";
         serve_dynamic(rp.get_fd(), request.getFilename().c_str(), \
-            request.getArgs().c_str(), request["Cookie"].c_str());
+            request.getArgs().c_str(), request["Cookie"].c_str(), request.getData().c_str());
     }
     
 }
 
-void serve_dynamic(int fd, const char *filename, const char *cgiargs, const char * cookie)
+void serve_dynamic(int fd, const char *filename, const char *cgiargs, const char * cookie, const char * data)
 {
-    const char  *emptylist[] = {filename, cgiargs, cookie, NULL};  
+    const char  *emptylist[] = {filename, cgiargs, cookie, data, NULL};  
 
     if(fork() == 0)
     {
