@@ -42,11 +42,9 @@ void Request::parse_uri()
     else            //动态文件
     {
         is_static = false;
-        filename = "./cgi-bin/index";  //根目录
-
-        // auto p = uri.find('?');
-        // filename += uri.substr(0, p);
-        //cgi_args = uri.substr(p+1);
+        auto p = uri.find('?');
+        filename += uri.substr(0, p);
+        cgi_args = uri.substr(p+1);
     }
     parse_filetype();
 }
@@ -74,20 +72,20 @@ void Request::setContent(string query)
     if(query.empty()) return;
 
     entity = query;
-//     auto p1 = query.find('=');
-//     auto p2 = query.find('&');
+    auto p1 = query.find('=');
+    auto p2 = query.find('&');
 
-//     while(p2 != query.npos)
-//     {
-//         datas[query.substr(0, p1)] = query.substr(p1 + 1, p2-p1-1);
-//         query = query.substr(p2+1);
-//         p1 = query.find('=');
-//         p2 = query.find('&');
-//     }
+    while(p2 != query.npos)
+    {
+        datas[query.substr(0, p1)] = query.substr(p1 + 1, p2-p1-1);
+        query = query.substr(p2+1);
+        p1 = query.find('=');
+        p2 = query.find('&');
+    }
     
-//  //   cout << query.substr(0, p1) << ":" << query.substr(p1 + 1, p2-p1-1) << endl;
+ //   cout << query.substr(0, p1) << ":" << query.substr(p1 + 1, p2-p1-1) << endl;
 
-//     datas[query.substr(0, p1)] = query.substr(p1 + 1, p2-p1-1);
+    datas[query.substr(0, p1)] = query.substr(p1 + 1, p2-p1-1);
 
     if(!entity.empty())
     {

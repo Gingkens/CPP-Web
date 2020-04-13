@@ -15,6 +15,12 @@ void HttpCookie::setExpires(time_t expire_time)
     cookie = string(buf);
 }
 
+void HttpCookie::setPath(string path)
+{
+    sprintf(buf,"%s; %s=%s", cookie.c_str(), "path", path.c_str());
+    cookie = string(buf);
+}
+
 string HttpCookie::getCookie()
 {
     return cookie;

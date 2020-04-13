@@ -18,6 +18,7 @@ int main(int argc, char *argv[])
 
     response.Redirect("/");
     HttpCookie cookie("session", infos["name"]);
+    cookie.setPath("/");
 
     if(db.find("user", sql))
     {

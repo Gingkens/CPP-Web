@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
     msg_entity << "<title>Tiny Web Server</title>\n";
     msg_entity << "<meta  charset='utf-8'>\n";
     msg_entity << "<link rel = 'stylesheet' href='/bootstrap/css/bootstrap.min.css'>\n";
-    msg_entity << "<script src='myScript.js'></script>\n";
+    msg_entity << "<script src='/myScript.js'></script>\n";
     msg_entity << "</head>\n";
     msg_entity << "<body>\n";
     msg_entity << "<div class='navbar navbar-inverse' role='navigation'>\n";
@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
         msg_entity <<"<h1>Hello, Stranger!</h1>\n"; 
     msg_entity << "</div>\n";
 
-    msg_entity << "<form method='post' action='/cgi-bin/index' name='Login' onsubmit='return validateForm()'>\n";
+    msg_entity << "<form method='post' action='/cgi-bin/login' name='Login' onsubmit='return validateForm()'>\n";
     msg_entity << "<div class='form-group'>\n";
     msg_entity << "<label for='exampleInputEmail1'>What is your name?</label>\n";
     msg_entity << "<input class='form-control' type='text' name='name' placeholder='Name'>\n";

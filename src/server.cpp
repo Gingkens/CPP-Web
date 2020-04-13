@@ -79,15 +79,16 @@ void process(RIO &rp, Request &request)
     }  
     else if(!strcmp(request.getMethod().c_str(), "GET"))
         response.init(200, "OK", request.getFilename() ,request.getFiletype(), sbuf.st_size);
-    else if(!strcmp(request.getMethod().c_str(), "POST"))            //重定向
-    {       
-        response.Redirect("/");
-        HttpCookie cookie("session", request.getData("name"));
-//        cookie.setExpires();
-        response.addCookie(cookie);
-        rp.rio_send(response.getResponse().c_str(), response.size(), 0);
-        return;
-    }
+//     else if(!strcmp(request.getMethod().c_str(), "POST"))            //重定向
+//     {       
+//         response.Redirect("/");
+//         HttpCookie cookie("session", request.getData("name"));
+//         cookie.setPath("/");
+// //        cookie.setExpires();
+//         response.addCookie(cookie);
+//         rp.rio_send(response.getResponse().c_str(), response.size(), 0);
+//         return;
+//     }
     // else                                        //未实现 501
     // {
     //     // strcpy(filename, "501.html");

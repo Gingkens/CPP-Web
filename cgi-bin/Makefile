@@ -21,3 +21,5 @@ test:
 
 clean:
 	-$(RM) $(TARGET)
+	-$(RM) $(OBJS)
+
